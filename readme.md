@@ -4,6 +4,8 @@
 Stash Hotel Rewards equips independent hotels to fight back against the large chains by providing a loyalty points program, member rates, and other special perks for Stash members when they book direct or through the Stash booking engine.
 
 ## Objectives
+To begin, please for this repository.
+
 Data for this project can be found in data.json.
 
 Create a new frontend application with at least three pages:
@@ -27,3 +29,9 @@ The following criteria will be evaluated:
 Nice to haves:
 - Codebase is tested and linted.
 - Good frontend practices for SEO and accessibility are present.
+
+Development is a collaborative process. So if you have any questions, feel free to reach out.
+
+
+## Submission
+When you are finished, please commit your changes and email a link to your finished project.
