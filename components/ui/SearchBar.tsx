@@ -7,22 +7,55 @@ import { Calendar as CalendarComponent } from "./calendar";
 import { Calendar, Search, Users } from "lucide-react";
 import { Input } from "./input";
 
-function SearchBar() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [checkInDate, setCheckInDate] = useState<Date | undefined>();
-  const [checkOutDate, setCheckOutDate] = useState<Date | undefined>();
-  const [numberOfAdults, setNumberOfAdults] = useState(1);
-  const [numberOfChildren, setNumberOfChildren] = useState(0);
+import { useRouter, useSearchParams } from "next/navigation";
+import { format, parse } from "date-fns";
+
+type Props = {
+  searchURL?: string;
+};
+
+function SearchBar({ searchURL = "hotels" }: Props) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Initialize state by checking the query parameters in the current URL
+  // Search bar component on a different page will persist state by using the query parameters
+  const [destination, setDestination] = useState(
+    searchParams.get("destination") || ""
+  );
+  const [checkInDate, setCheckInDate] = useState<Date | undefined>(() => {
+    const date = searchParams.get("checkIn");
+    return date ? parse(date, "yyyy-MM-dd", new Date()) : undefined;
+  });
+  const [checkOutDate, setCheckOutDate] = useState<Date | undefined>(() => {
+    const date = searchParams.get("checkOut");
+    return date ? parse(date, "yyyy-MM-dd", new Date()) : undefined;
+  });
+  const [numberOfAdults, setNumberOfAdults] = useState(() => {
+    const adults = searchParams.get("adults");
+    return adults ? parseInt(adults) : 1;
+  });
+  const [numberOfChildren, setNumberOfChildren] = useState(() => {
+    const children = searchParams.get("children");
+    return children ? parseInt(children) : 0;
+  });
 
   function submitQuery() {
-    const query = {
-      cityOrHotel: searchQuery,
-      checkInDate,
-      checkOutDate,
-      numberOfAdults,
-      numberOfChildren,
-    };
-    console.log(query);
+    if (!destination || destination === "") {
+      return;
+    }
+
+    const params = new URLSearchParams();
+    params.set("destination", destination);
+
+    if (checkInDate) {
+      params.set("checkIn", format(checkInDate, "yyyy-MM-dd"));
+    }
+    if (checkOutDate) {
+      params.set("checkOut", format(checkOutDate, "yyyy-MM-dd"));
+    }
+
+    router.push(`${searchURL}?${params}`);
   }
 
   return (
@@ -32,8 +65,8 @@ function SearchBar() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
             placeholder="Search hotels by city or name..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            value={destination}
+            onChange={(e) => setDestination(e.target.value)}
             className="pl-10 "
           />
         </div>
@@ -47,7 +80,7 @@ function SearchBar() {
               >
                 <Calendar className="h-4 w-4" />
                 <span>
-                  {checkInDate ? checkInDate.toLocaleDateString() : "Check-in"}
+                  {checkInDate ? format(checkInDate, "MMM do") : "Check-in"}
                 </span>
               </Button>
             </PopoverTrigger>
@@ -72,9 +105,7 @@ function SearchBar() {
               >
                 <Calendar className="h-4 w-4" />
                 <span>
-                  {checkOutDate
-                    ? checkOutDate.toLocaleDateString()
-                    : "Check-out"}
+                  {checkOutDate ? format(checkOutDate, "MMM do") : "Check-out"}
                 </span>
               </Button>
             </PopoverTrigger>
@@ -147,7 +178,7 @@ function SearchBar() {
 
         <Button
           variant="default"
-          className="md:col-span-5 mt-2 md:mt-4"
+          className="md:col-span-5 mt-2 md:mt-4 hover:!cursor-pointer"
           onClick={() => submitQuery()}
         >
           Search

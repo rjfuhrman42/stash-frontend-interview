@@ -47,7 +47,7 @@ export default function Home() {
         </h1>
       </header>
       <main className="flex flex-col sm:items-start container gap-8">
-        <SearchBar />
+        <SearchBar searchURL="hotels" />
         <ul className="grid auto-cols-min gap-4 md:grid-cols-3 lg:grid-cols-4 ">
           {Object.keys(hotelsByCity).map((city) => {
             return (
