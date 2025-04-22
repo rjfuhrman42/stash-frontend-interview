@@ -1,5 +1,6 @@
 import Link from "next/link";
 import hotelsData from "../data.json";
+import SearchBar from "@/components/ui/SearchBar";
 
 export default function Home() {
   /**
@@ -45,7 +46,8 @@ export default function Home() {
           The best hotels are independent hotels.
         </h1>
       </header>
-      <main className="flex flex-col sm:items-start container ">
+      <main className="flex flex-col sm:items-start container gap-8">
+        <SearchBar />
         <ul className="grid auto-cols-min gap-4 md:grid-cols-3 lg:grid-cols-4 ">
           {Object.keys(hotelsByCity).map((city) => {
             return (
