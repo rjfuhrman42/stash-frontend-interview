@@ -1,16 +1,24 @@
 import Link from "next/link";
-import hotelsData from "../data.json";
+import data from "../data.json";
 import SearchBar from "@/components/SearchBar";
+import { Hotel } from "@/components/HotelCard";
 
 export default function Home() {
+  const hotelsData = data.map((hotel) => ({
+    ...hotel,
+    dailyRate: hotel.daily_rate,
+    hasMemberRate: hotel.has_member_rate,
+  })) as Hotel[];
+
   /**
    * Groups hotel data by city.
    * @param {Array} hotels - Array of hotel objects from data.json
    * @returns {Object} Object with city names as keys and arrays of hotels as values
    */
-  function groupHotelsByCity(hotels) {
+
+  function groupHotelsByCity(hotels: Hotel[]) {
     // Create an object to hold hotels grouped by city
-    const groupedHotels = {};
+    const groupedHotels: { [key: string]: Hotel[] } = {};
 
     // Group hotels by city
     hotels.forEach((hotel) => {
@@ -29,7 +37,7 @@ export default function Home() {
     const sortedCities = Object.keys(groupedHotels).sort();
 
     // Create a new object with cities in alphabetical order
-    const sortedGroupedHotels = {};
+    const sortedGroupedHotels: { [key: string]: Hotel[] } = {};
     sortedCities.forEach((city) => {
       sortedGroupedHotels[city] = groupedHotels[city];
     });
@@ -49,7 +57,7 @@ export default function Home() {
               <li key={city}>
                 <h3 className="font-bold text-2xl">{city}</h3>
                 <ul className="flex flex-col">
-                  {hotelsByCity[city].map((hotel) => {
+                  {hotelsByCity[city].map((hotel: Hotel) => {
                     return (
                       <li key={hotel.id}>
                         <Link

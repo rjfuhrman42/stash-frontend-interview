@@ -19,25 +19,26 @@ function HotelCard({ name, city, dailyRate, hasMemberRate, id, image }: Hotel) {
     : Math.round(dailyRate);
 
   return (
-    <div className="border-2 border-gray-300 bg-lighter-background flex gap-x-8 rounded-md p-4">
-      <Image
-        width={350}
-        height={350}
-        src={image}
-        alt={name}
-        className="rounded-md border-2 border-gray-300"
-      />
+    <div className="border-2 border-gray-300 bg-lighter-background flex flex-col gap-8 rounded-md p-4 md:flex-row">
+      <div className="relative h-[250px] w-full md:w-1/4">
+        <Image
+          fill
+          src={image}
+          alt={name}
+          className="rounded-md border-2 border-gray-300 object-cover"
+        />
+      </div>
       <div className="flex flex-col gap-2">
         <h3 className="text-3xl font-bold">{name}</h3>
         <p className="text-lg">{city}</p>
       </div>
-      <div className="flex flex-col justify-between ml-auto border-l-2 rounded-l-3xl p-4 pl-8">
+      <div className="flex flex-col justify-between md:ml-auto md:border-l-2 gap-2 rounded-l-3xl py-4 md:pl-8">
         <div className="flex items-end gap-2">
           {hasMemberRate ? (
             <div>
               <div className="flex items-center gap-2">
-                <Handshake className="text-orange-500" />
-                <p className="text-xl font-fraunces font-bold text-orange-500">
+                <Handshake className="text-orange-600" />
+                <p className="text-xl font-fraunces font-bold text-orange-600">
                   Member&apos;s rate
                 </p>
               </div>
@@ -55,7 +56,7 @@ function HotelCard({ name, city, dailyRate, hasMemberRate, id, image }: Hotel) {
           )}
         </div>
 
-        <Button className="bg-blue-500 !text-lg" size="lg">
+        <Button className="bg-blue-600 !font-bold !text-lg" size="lg" asChild>
           <Link className="p-8" href={`/hotels/${id.toString()}`}>
             Find your room
           </Link>
