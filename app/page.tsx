@@ -1,6 +1,6 @@
 import Link from "next/link";
 import hotelsData from "../data.json";
-import SearchBar from "@/components/ui/SearchBar";
+import SearchBar from "@/components/SearchBar";
 
 export default function Home() {
   /**
@@ -41,12 +41,7 @@ export default function Home() {
 
   return (
     <div className="items-center justify-items-center min-h-screen pb-20 p-4 font-[family-name:var(--font-geist-sans)]">
-      <header className="container">
-        <h1 className="text-4xl pb-24 pt-4">
-          The best hotels are independent hotels.
-        </h1>
-      </header>
-      <main className="flex flex-col sm:items-start container gap-8">
+      <main className="flex flex-col sm:items-start max-w-7xl container gap-8">
         <SearchBar searchURL="hotels" />
         <ul className="grid auto-cols-min gap-4 md:grid-cols-3 lg:grid-cols-4 ">
           {Object.keys(hotelsByCity).map((city) => {
@@ -58,7 +53,7 @@ export default function Home() {
                     return (
                       <li key={hotel.id}>
                         <Link
-                          href="/"
+                          href={`/hotels/${hotel.id}`}
                           className="text-blue-900 hover:underline"
                         >
                           {hotel.name}
