@@ -32,7 +32,11 @@ function SearchBar({ searchURL = "hotels" }: Props) {
   );
 
   useEffect(() => {
-    console.log("stored Data", searchData);
+    // In this useEffect hook,
+    // 1. wait until the searchData is retrieved from local storage
+    // 2. Initialize each state with values from local storage, if they exist
+    // This allows the search bar data to persists across pages (and sessions)
+
     if (typeof searchData !== "string") {
       const {
         destination,
@@ -41,6 +45,7 @@ function SearchBar({ searchURL = "hotels" }: Props) {
         numberOfAdults,
         numberOfChildren,
       } = searchData;
+
       setDestination(destination);
       setCheckInDate(
         checkInDate ? parse(checkInDate, "yyyy-MM-dd", new Date()) : undefined
@@ -49,12 +54,9 @@ function SearchBar({ searchURL = "hotels" }: Props) {
         checkOutDate ? parse(checkOutDate, "yyyy-MM-dd", new Date()) : undefined
       );
       setNumberOfAdults(parseInt(numberOfAdults));
-      console.log(numberOfChildren);
       setNumberOfChildren(parseInt(numberOfChildren) ?? 0);
     }
   }, [searchData]);
-
-  // Initialize state by checking the Session storage
 
   const [destination, setDestination] = useState("");
   const [checkInDate, setCheckInDate] = useState<Date | undefined>();
@@ -63,11 +65,16 @@ function SearchBar({ searchURL = "hotels" }: Props) {
   const [numberOfChildren, setNumberOfChildren] = useState(0);
 
   function submitQuery() {
+    // If no destination is provided, don't submit the query
+    // This would (ideally) also be handled by the form
     if (!destination || destination === "") {
       return;
     }
 
     const params = new URLSearchParams();
+
+    // Construct a query parameters string
+    // This will be used by the results page to find the right hotels
 
     params.set("destination", destination);
 
@@ -84,6 +91,7 @@ function SearchBar({ searchURL = "hotels" }: Props) {
       params.set("children", numberOfChildren.toString());
     }
 
+    // Update the local storage
     setSearchData({
       destination,
       checkInDate: checkInDate ? format(checkInDate, "yyyy-MM-dd") : "",
@@ -91,6 +99,8 @@ function SearchBar({ searchURL = "hotels" }: Props) {
       numberOfAdults: numberOfAdults ? numberOfAdults.toString() : "1",
       numberOfChildren: numberOfChildren ? numberOfChildren.toString() : "0",
     });
+
+    // Navigate to the provided search URL, include the query parameters
     router.push(`${searchURL}?${params}`);
   }
 
@@ -208,7 +218,7 @@ function SearchBar({ searchURL = "hotels" }: Props) {
 
       <Button
         variant="default"
-        className="hover:!cursor-pointer bg-blue-500 h-14 w-full md:w-1/12"
+        className="hover:!cursor-pointer !font-bold bg-blue-600 h-14 w-full md:w-1/12"
         onClick={() => submitQuery()}
       >
         Search

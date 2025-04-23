@@ -25,23 +25,28 @@ export default function Hotels() {
   return (
     <div className="items-center justify-items-center min-h-screen pb-20 p-4 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col sm:items-start max-w-7xl container gap-8">
-        <SearchBar />
+        <SearchBar searchURL="/hotels" />
         <div className="flex flex-col gap-4  w-full">
-          {filteredHotels.map((hotel) => {
-            const { name, city, id, has_member_rate, daily_rate, image } =
-              hotel;
-            return (
-              <HotelCard
-                key={id}
-                name={name}
-                city={city}
-                hasMemberRate={has_member_rate}
-                dailyRate={daily_rate}
-                id={id}
-                image={image}
-              />
-            );
-          })}
+          <h3 className="text-2xl">Results for: {destinationQuery}</h3>
+          {filteredHotels.length === 0 ? (
+            <p>We couldn&apos;t find any hotels based on your search :(</p>
+          ) : (
+            filteredHotels.map((hotel) => {
+              const { name, city, id, has_member_rate, daily_rate, image } =
+                hotel;
+              return (
+                <HotelCard
+                  key={id}
+                  name={name}
+                  city={city}
+                  hasMemberRate={has_member_rate}
+                  dailyRate={daily_rate}
+                  id={id}
+                  image={image}
+                />
+              );
+            })
+          )}
         </div>
       </main>
     </div>
