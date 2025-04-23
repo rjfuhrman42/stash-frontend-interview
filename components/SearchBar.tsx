@@ -8,7 +8,7 @@ import { Calendar, Search, Users } from "lucide-react";
 import { Input } from "./ui/input";
 
 import { useRouter } from "next/navigation";
-import { format, parse } from "date-fns";
+import { addDays, format, parse } from "date-fns";
 import useLocalStorage from "@/app/hooks/useLocalStorage";
 
 type Props = {
@@ -134,7 +134,15 @@ function SearchBar({ searchURL = "hotels" }: Props) {
               selected={checkInDate}
               onSelect={setCheckInDate}
               initialFocus
-              disabled={(date) => date < new Date()}
+              disabled={(date) => {
+                const atLeastOneDayBeforeCheckOut =
+                  checkOutDate && date > addDays(checkOutDate, -1);
+
+                if (date < new Date() || atLeastOneDayBeforeCheckOut) {
+                  return true;
+                }
+                return false;
+              }}
             />
           </PopoverContent>
         </Popover>
@@ -158,7 +166,15 @@ function SearchBar({ searchURL = "hotels" }: Props) {
               selected={checkOutDate}
               onSelect={setCheckOutDate}
               initialFocus
-              disabled={(date) => date < (checkInDate || new Date())}
+              disabled={(date) => {
+                const atLeastOneDayAfterCheckIn =
+                  checkInDate && date < addDays(checkInDate, 1);
+
+                if (date < new Date() || atLeastOneDayAfterCheckIn) {
+                  return true;
+                }
+                return false;
+              }}
             />
           </PopoverContent>
         </Popover>

@@ -3,6 +3,7 @@ import { Fraunces, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import { Hotel, Palmtree } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -43,7 +44,9 @@ export default function RootLayout({
             <h2 className="text-4xl py-4 font-fraunces">
               The best hotels are independent hotels.
             </h2>
-            <Link href="/">Home</Link>
+            <Button variant="link" asChild>
+              <Link href="/">Go back home</Link>
+            </Button>
           </header>
         </div>
         {children}
