@@ -1,22 +1,25 @@
 import Image from "next/image";
 import React from "react";
-import { Button } from "./button";
+import { Button } from "./ui/button";
 import { Handshake } from "lucide-react";
+import Link from "next/link";
 
-type Props = {
+export type Hotel = {
   name: string;
   city: string;
   dailyRate: number;
   hasMemberRate: boolean;
+  id: number;
   image: string;
 };
 
-function HotelCard({ name, city, dailyRate, hasMemberRate, image }: Props) {
+function HotelCard({ name, city, dailyRate, hasMemberRate, id, image }: Hotel) {
   const hotelRate = hasMemberRate
     ? Math.round(dailyRate - dailyRate * 0.1)
     : Math.round(dailyRate);
+
   return (
-    <div className="hotel-card border-2 border-gray-300 bg-lighter-background flex gap-x-8 rounded-md p-4">
+    <div className="border-2 border-gray-300 bg-lighter-background flex gap-x-8 rounded-md p-4">
       <Image
         width={350}
         height={350}
@@ -52,8 +55,10 @@ function HotelCard({ name, city, dailyRate, hasMemberRate, image }: Props) {
           )}
         </div>
 
-        <Button className="bg-blue-500 p-8 !text-lg" size="lg">
-          Find your room
+        <Button className="bg-blue-500 !text-lg" size="lg">
+          <Link className="p-8" href={`/hotels/${id.toString()}`}>
+            Find your room
+          </Link>
         </Button>
       </div>
     </div>

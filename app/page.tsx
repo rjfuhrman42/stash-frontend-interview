@@ -1,6 +1,6 @@
 import Link from "next/link";
 import hotelsData from "../data.json";
-import SearchBar from "@/components/ui/SearchBar";
+import SearchBar from "@/components/SearchBar";
 
 export default function Home() {
   /**
@@ -53,7 +53,7 @@ export default function Home() {
                     return (
                       <li key={hotel.id}>
                         <Link
-                          href="/"
+                          href={`/hotels/${hotel.id}`}
                           className="text-blue-900 hover:underline"
                         >
                           {hotel.name}

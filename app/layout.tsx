@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Fraunces, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
+import { Hotel, HotelIcon, Palmtree } from "lucide-react";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -27,14 +29,21 @@ export default function RootLayout({
       <body
         className={`${fraunces.variable} ${spaceGrotesk.variable} antialiased bg-main-background`}
       >
-        <div className="flex justify-center">
+        <div className="flex justify-center p-4">
           <header className="max-w-7xl container">
-            <h1 className="text-6xl font-fraunces font-black text-orange-600">
-              Stash
-            </h1>
-            <h2 className="text-4xl pb-24 pt-4 font-fraunces">
+            <div className="flex items-baseline gap-2">
+              <h1 className="text-6xl font-fraunces font-black text-orange-600">
+                Stash
+              </h1>
+              <div className="flex">
+                <Hotel className="text-orange-600" />
+                <Palmtree className="text-orange-600" />
+              </div>
+            </div>
+            <h2 className="text-4xl py-4 font-fraunces">
               The best hotels are independent hotels.
             </h2>
+            <Link href="/">Home</Link>
           </header>
         </div>
         {children}

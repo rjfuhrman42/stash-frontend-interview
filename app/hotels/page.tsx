@@ -1,9 +1,9 @@
 "use client";
-import SearchBar from "@/components/ui/SearchBar";
+import SearchBar from "@/components/SearchBar";
 
 import hotelsData from "../../data.json";
 import { useSearchParams } from "next/navigation";
-import HotelCard from "@/components/ui/HotelCard";
+import HotelCard from "@/components/HotelCard";
 
 export default function Hotels() {
   const searchParams = useSearchParams();
@@ -37,6 +37,7 @@ export default function Hotels() {
                 city={city}
                 hasMemberRate={has_member_rate}
                 dailyRate={daily_rate}
+                id={id}
                 image={image}
               />
             );

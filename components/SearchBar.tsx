@@ -1,44 +1,66 @@
 "use client";
 
-import React, { useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "./popover";
-import { Button } from "./button";
-import { Calendar as CalendarComponent } from "./calendar";
+import React, { useEffect, useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Button } from "./ui/button";
+import { Calendar as CalendarComponent } from "./ui/calendar";
 import { Calendar, Search, Users } from "lucide-react";
-import { Input } from "./input";
+import { Input } from "./ui/input";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { format, parse } from "date-fns";
+import useLocalStorage from "@/app/hooks/useLocalStorage";
 
 type Props = {
   searchURL?: string;
 };
 
+type SearchData = {
+  destination: string;
+  checkInDate: string;
+  checkOutDate: string;
+  numberOfAdults: string;
+  numberOfChildren: string;
+};
+
 function SearchBar({ searchURL = "hotels" }: Props) {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  // Initialize state by checking the query parameters in the current URL
-  // Search bar component on a different page will persist state by using the query parameters
-  const [destination, setDestination] = useState(
-    searchParams.get("destination") || ""
+  const [searchData, setSearchData] = useLocalStorage<SearchData | string>(
+    "searchData",
+    ""
   );
-  const [checkInDate, setCheckInDate] = useState<Date | undefined>(() => {
-    const date = searchParams.get("checkIn");
-    return date ? parse(date, "yyyy-MM-dd", new Date()) : undefined;
-  });
-  const [checkOutDate, setCheckOutDate] = useState<Date | undefined>(() => {
-    const date = searchParams.get("checkOut");
-    return date ? parse(date, "yyyy-MM-dd", new Date()) : undefined;
-  });
-  const [numberOfAdults, setNumberOfAdults] = useState(() => {
-    const adults = searchParams.get("adults");
-    return adults ? parseInt(adults) : 1;
-  });
-  const [numberOfChildren, setNumberOfChildren] = useState(() => {
-    const children = searchParams.get("children");
-    return children ? parseInt(children) : 0;
-  });
+
+  useEffect(() => {
+    console.log("stored Data", searchData);
+    if (typeof searchData !== "string") {
+      const {
+        destination,
+        checkInDate,
+        checkOutDate,
+        numberOfAdults,
+        numberOfChildren,
+      } = searchData;
+      setDestination(destination);
+      setCheckInDate(
+        checkInDate ? parse(checkInDate, "yyyy-MM-dd", new Date()) : undefined
+      );
+      setCheckOutDate(
+        checkOutDate ? parse(checkOutDate, "yyyy-MM-dd", new Date()) : undefined
+      );
+      setNumberOfAdults(parseInt(numberOfAdults));
+      console.log(numberOfChildren);
+      setNumberOfChildren(parseInt(numberOfChildren) ?? 0);
+    }
+  }, [searchData]);
+
+  // Initialize state by checking the Session storage
+
+  const [destination, setDestination] = useState("");
+  const [checkInDate, setCheckInDate] = useState<Date | undefined>();
+  const [checkOutDate, setCheckOutDate] = useState<Date | undefined>();
+  const [numberOfAdults, setNumberOfAdults] = useState(1);
+  const [numberOfChildren, setNumberOfChildren] = useState(0);
 
   function submitQuery() {
     if (!destination || destination === "") {
@@ -46,6 +68,7 @@ function SearchBar({ searchURL = "hotels" }: Props) {
     }
 
     const params = new URLSearchParams();
+
     params.set("destination", destination);
 
     if (checkInDate) {
@@ -61,6 +84,13 @@ function SearchBar({ searchURL = "hotels" }: Props) {
       params.set("children", numberOfChildren.toString());
     }
 
+    setSearchData({
+      destination,
+      checkInDate: checkInDate ? format(checkInDate, "yyyy-MM-dd") : "",
+      checkOutDate: checkOutDate ? format(checkOutDate, "yyyy-MM-dd") : "",
+      numberOfAdults: numberOfAdults ? numberOfAdults.toString() : "1",
+      numberOfChildren: numberOfChildren ? numberOfChildren.toString() : "0",
+    });
     router.push(`${searchURL}?${params}`);
   }
 

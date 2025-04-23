@@ -112,6 +112,10 @@ h6 {
   text-wrap: balance;
 }
 
+h2 {
+  @apply text-4xl;
+}
+
 /*
   10. Create a root stacking context
 */
