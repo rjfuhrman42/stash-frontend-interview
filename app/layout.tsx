@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import { Hotel, HotelIcon, Palmtree } from "lucide-react";
+import { Hotel, Palmtree } from "lucide-react";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
