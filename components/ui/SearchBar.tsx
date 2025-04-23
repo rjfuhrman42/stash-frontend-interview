@@ -54,136 +54,135 @@ function SearchBar({ searchURL = "hotels" }: Props) {
     if (checkOutDate) {
       params.set("checkOut", format(checkOutDate, "yyyy-MM-dd"));
     }
+    if (numberOfAdults) {
+      params.set("adults", numberOfAdults.toString());
+    }
+    if (numberOfChildren) {
+      params.set("children", numberOfChildren.toString());
+    }
 
     router.push(`${searchURL}?${params}`);
   }
 
   return (
-    <div className="py-6 rounded-lg mb-8 w-full">
-      <div className="grid gap-4 md:grid-cols-[1fr_auto_auto_auto_auto]">
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input
-            placeholder="Search hotels by city or name..."
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-            className="pl-10 "
-          />
-        </div>
-
-        <div className="flex items-center">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className="justify-start text-left font-normal flex gap-2 w-[140px]"
-              >
-                <Calendar className="h-4 w-4" />
-                <span>
-                  {checkInDate ? format(checkInDate, "MMM do") : "Check-in"}
-                </span>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <CalendarComponent
-                mode="single"
-                selected={checkInDate}
-                onSelect={setCheckInDate}
-                initialFocus
-                disabled={(date) => date < new Date()}
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className="justify-start text-left font-normal flex gap-2 w-[140px]"
-              >
-                <Calendar className="h-4 w-4" />
-                <span>
-                  {checkOutDate ? format(checkOutDate, "MMM do") : "Check-out"}
-                </span>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <CalendarComponent
-                mode="single"
-                selected={checkOutDate}
-                onSelect={setCheckOutDate}
-                initialFocus
-                disabled={(date) => date < (checkInDate || new Date())}
-              />
-            </PopoverContent>
-          </Popover>
-        </div>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className="justify-start text-left font-normal flex gap-2 w-[140px]"
-            >
-              <Users className="h-4 w-4" /> {numberOfAdults}{" "}
-              {numberOfAdults === 1 ? "Adult" : "Adults"}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="flex justify-evenly items-center">
-            Adults
-            <Button onClick={() => setNumberOfAdults((prev) => prev + 1)}>
-              +
-            </Button>
-            <span>{numberOfAdults}</span>
-            <Button
-              onClick={() =>
-                setNumberOfAdults((prev) => {
-                  if (prev <= 1) return prev;
-                  return prev - 1;
-                })
-              }
-            >
-              -
-            </Button>
-          </PopoverContent>
-        </Popover>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className="justify-start text-left font-normal flex gap-2 w-[140px]"
-            >
-              <Users className="h-4 w-4" /> {numberOfChildren} Children
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="flex justify-evenly items-center">
-            Children
-            <Button onClick={() => setNumberOfChildren((prev) => prev + 1)}>
-              +
-            </Button>
-            <span>{numberOfChildren}</span>
-            <Button
-              onClick={() =>
-                setNumberOfChildren((prev) => {
-                  if (prev === 0) return prev;
-                  return prev - 1;
-                })
-              }
-            >
-              -
-            </Button>
-          </PopoverContent>
-        </Popover>
-
-        <Button
-          variant="default"
-          className="md:col-span-5 mt-2 md:mt-4 hover:!cursor-pointer"
-          onClick={() => submitQuery()}
-        >
-          Search
-        </Button>
+    <div className="flex flex-col items-center bg-orange-500 p-1 gap-1 rounded-lg mb-8 w-full min-h-16 md:flex-row">
+      <div className="relative flex-1 w-full">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+        <Input
+          placeholder="Search hotels by city or name..."
+          value={destination}
+          onChange={(e) => setDestination(e.target.value)}
+          className="h-14 pl-10 bg-white"
+        />
       </div>
+      <div className="flex items-center w-full md:w-[140px]">
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="h-14 justify-start text-left font-normal flex gap-2 w-full"
+            >
+              <Calendar className="h-4 w-4" />
+              <span>
+                {checkInDate ? format(checkInDate, "MMM do") : "Check-in"}
+              </span>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <CalendarComponent
+              mode="single"
+              selected={checkInDate}
+              onSelect={setCheckInDate}
+              initialFocus
+              disabled={(date) => date < new Date()}
+            />
+          </PopoverContent>
+        </Popover>
+      </div>
+      <div className="flex items-center space-x-2 w-full md:w-[140px]">
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="h-14 justify-start text-left font-normal flex gap-2 w-full"
+            >
+              <Calendar className="h-4 w-4" />
+              <span>
+                {checkOutDate ? format(checkOutDate, "MMM do") : "Check-out"}
+              </span>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <CalendarComponent
+              mode="single"
+              selected={checkOutDate}
+              onSelect={setCheckOutDate}
+              initialFocus
+              disabled={(date) => date < (checkInDate || new Date())}
+            />
+          </PopoverContent>
+        </Popover>
+      </div>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className="h-14 justify-start text-left font-normal flex gap-2 w-full md:w-max"
+          >
+            <Users className="h-4 w-4" /> {numberOfAdults}{" "}
+            {numberOfAdults === 1 ? "Adult" : "Adults"}
+            <Users className="h-4 w-4" /> {numberOfChildren} Children
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="flex flex-col gap-y-2 justify-start items-start">
+          <div className="flex items-center w-full">
+            Adults
+            <div className="flex items-center ml-auto gap-4">
+              <Button onClick={() => setNumberOfAdults((prev) => prev + 1)}>
+                +
+              </Button>
+              <span className="w-4 text-center">{numberOfAdults}</span>
+              <Button
+                onClick={() =>
+                  setNumberOfAdults((prev) => {
+                    if (prev <= 1) return prev;
+                    return prev - 1;
+                  })
+                }
+              >
+                -
+              </Button>
+            </div>
+          </div>
+          <div className="flex items-center w-full">
+            Children
+            <div className="flex items-center ml-auto gap-4">
+              <Button onClick={() => setNumberOfChildren((prev) => prev + 1)}>
+                +
+              </Button>
+              <span className="w-4 text-center">{numberOfChildren}</span>
+              <Button
+                onClick={() =>
+                  setNumberOfChildren((prev) => {
+                    if (prev === 0) return prev;
+                    return prev - 1;
+                  })
+                }
+              >
+                -
+              </Button>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
+
+      <Button
+        variant="default"
+        className="hover:!cursor-pointer bg-blue-500 h-14 w-full md:w-1/12"
+        onClick={() => submitQuery()}
+      >
+        Search
+      </Button>
     </div>
   );
 }

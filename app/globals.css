@@ -7,6 +7,8 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-fraunces: var(--font-fraunces);
+  --font-space-grotesk: var(--font-space-grotesk);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -40,6 +42,9 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --color-main-background: var(--main-background);
+  --color-lighter-background: rgb(252, 253, 247);
+  --color-accent-blue: var(--accent-blue);
 }
 
 /* 1. Use a more-intuitive box-sizing model */
@@ -47,11 +52,6 @@
 *::before,
 *::after {
   box-sizing: border-box;
-}
-
-/* 2. Remove default margin */
-* {
-  margin: 0;
 }
 
 /* 3. Enable keyword animations */
@@ -66,6 +66,7 @@ body {
   line-height: 1.5;
   /* 5. Improve text rendering */
   -webkit-font-smoothing: antialiased;
+  font-family: "Space Grotesk", sans-serif;
 }
 
 /* 6. Improve media defaults */
@@ -101,6 +102,7 @@ h6 {
 p {
   text-wrap: pretty;
 }
+
 h1,
 h2,
 h3,
@@ -151,6 +153,9 @@ h6 {
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
+
+  --main-background: rgb(247, 247, 240);
+  --stash-orange: rgb(251, 101, 30);
 }
 
 .dark {

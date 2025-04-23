@@ -1,8 +1,9 @@
 "use client";
 import SearchBar from "@/components/ui/SearchBar";
-import Link from "next/link";
+
 import hotelsData from "../../data.json";
 import { useSearchParams } from "next/navigation";
+import HotelCard from "@/components/ui/HotelCard";
 
 export default function Hotels() {
   const searchParams = useSearchParams();
@@ -23,17 +24,22 @@ export default function Hotels() {
 
   return (
     <div className="items-center justify-items-center min-h-screen pb-20 p-4 font-[family-name:var(--font-geist-sans)]">
-      <header className="container">
-        <Link href="/">back to index page!</Link>
-        <h1 className="text-4xl pb-24 pt-4">
-          The best hotels are independent hotels.
-        </h1>
-      </header>
-      <main className="flex flex-col sm:items-start container gap-8">
+      <main className="flex flex-col sm:items-start max-w-7xl container gap-8">
         <SearchBar />
-        <div>
+        <div className="flex flex-col gap-4  w-full">
           {filteredHotels.map((hotel) => {
-            return <p key={hotel.id}>{hotel.name}</p>;
+            const { name, city, id, has_member_rate, daily_rate, image } =
+              hotel;
+            return (
+              <HotelCard
+                key={id}
+                name={name}
+                city={city}
+                hasMemberRate={has_member_rate}
+                dailyRate={daily_rate}
+                image={image}
+              />
+            );
           })}
         </div>
       </main>
